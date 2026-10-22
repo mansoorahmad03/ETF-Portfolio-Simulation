@@ -1,0 +1,102 @@
+artifacts = [
+  "solution/outputfile/Portfolio for Schwab Investments - Solved.xlsx"
+]
+
+schema_version = "2.0"
+
+[task]
+name = "insight/7ETFPortfolioSimulationV1"
+
+description = """ The scenario involves building two tables within an investment portfolio simulation tracker while accounting for an economic decline in share values, coupled with a reverse stock/share split in the second table, that also incorporates dividend income figures.
+
+During the second half of 2025, a new series of ETFs were released in the category: high-yield ETFs. The dividend yield for these ETFs was sometimes as much as 100-150% for some versions, such as AMDY and MSTY. They advertised high income with limited growth and were meant to be held long-term for passive income rather than market value gains.
+
+Investors could invest as little as $10,000 into something like AMDY or MSTY and have as much as hundreds of dollars in dividends, with a qualified dividend tax rate deducted every month, since the distribution frequency was weekly for some.
+
+Due to the nature of the investment strategy, the share values dropped considerably for certain high-yield ETFs, specifically MSTY, which is a sister ETF to AMDY. MSTY's strategy involved calling shorts and put options against the parent stock MSTR, which represents the company MicroStrategy. Only when there were massive volatility swings, either in a price increase or a price decrease in MSTR, was income generated as dividends for these types of securities (for example, AMDY has the same strategy against AMD Corporation).
+
+The underlying asset for some of these ETFs (such as MSTY) was holdings in Bitcoin, for which there was volatility due to it being an e-currency. Drops in Bitcoin's value also affected these ETFs.
+
+Any time there was a volatility swing in the underlying stock (MSTR), there were large distributions to investors who held the ETF MSTY. There were also swings in the value of MSTY every week during the weekly distributions. Prior to distributions, as investors anticipated earnings for the week, the share values rose. After the distributions, the share values would drop for a day or two due to the fact that almost the entire earnings based on shorts and put options were immediately distributed.
+
+In addition, each time this occurred, the net assets would drop, resulting in NAV erosion of the ETF. This caused MSTY to slowly decline week by week in value. By December 2025, a 4-to-1 reverse stock split was declared. Months later, the market values declined to levels before the reverse stock/share split occured.
+
+This is due to business uncertainty with new presidential legislation, along with further declines due to the declaration of war during the US-Iran conflict, the values of MSTY began to decline to levels of market values even lower than before the reverse share split. It was almost as if it were a penny stock.
+
+AMDY is a sister ETF to MSTY and is dependent on the swings of AMD Corporation. However, the concept is the same, and at any point the values can decline to a point where the fund managers decide to issue a reverse-share split to pass the illusion to new investors that the ETF has a high value, not similar to a penny stock."""
+
+[metadata]
+category = "Operations"
+subcategory = "Finance"
+tags = ["finance", "tax", "dividend income", "passive income", "economic decline simulation", "python", "portfolio"]
+expert_time_estimate_hours = 1
+relevant_experience = "6 years of experience in the financial services industry ranging from work in investor reporting, business intelligence, data analysis, systems analysis, and 2+ years of AI Training in Economics, Finance, Tax, and Accounting"                 
+difficulty_explanation = """This is a seemingly simple-by-concept practice that involves tedious work with regard to calculating a simulation of ETF performance in different market conditions. It requires professional judgement to know which formulas and calculations best simulate the effect on total dividends for the month and year based on a simulated reverse stock/share split, coupled with a decline in share value to base prices. In addition to this, there are differing percentage losses in share value post-reverse stock/share split.
+
+The solution script takes the input template workbook file and utilizes the provided share value figures and distribution frequencies to compute dividend-related totals for columns J, N, R, V, Y, and generates an output file with the results."""
+
+solution_explanation = """There are three major calculations in the first three calculated columns requested by the instructions.md file. The remaining three calculations depend on these directly. 
+
+There are differing calculations in two tables, Table 1 and Table 2. Table 2 represents the reverse-share split and economic decline calculations, while Table 1 is composed of standard investment dividend income calculations.
+
+In the order of the six "Model Figure" columns, the first calculated figure is the Cost Basis Total, which is calculated as:
+Cost Basis per Share Value * Total Share Quantity (Original)
+
+The next figure calculated is the Total Share Quantity:
+For Table 1, the calculation is -
+(Total ETF Investment Amount / Cost per Share)
+
+For Table 2, the calculation can either be -
+(Total ETF Investment Amount / Cost per Share) 
+
+OR 
+
+(1 - % of Total Shares after Split Compared to Original Quantity) * (Total Investment Amount / Cost per Share)
+For example, BAB can be calculated as (1 - 0.85) * ($33,333.33 / 27.20 )
+
+The third column for "Model Figure" calculates the "Total ETF Dividend per Single Share per Year). 
+Since these values are provided as inputs within the input workbook (in the column for Table 1 as dividend distribution * distribution frequency per year), Table 1 uses the same values in the preceding columns.
+
+However, since there is a reverse share split that matches the same percentage of the share decline (for example, a 50% reverse share split, 50% share value decline for AMDY), there can be two methods used to calculate the Dividend per Share per Year:
+
+Input Value for Dividend per Share/Year * 
+(1 - (Updated Market Value, Input Provided - Cost Basis Share Value)/Cost Basis Share Value))
+
+OR 
+
+New Total Quantity Post Reverse-Share Split * Provided Total ETF Dividend/Share per Year, Input
+
+As explained below, the Oracle Tests allow for calculation of the 2nd and 3rd requested columns in either methodology.
+
+The remaining three columns depend on these calculations and are significantly less complex to deliver:
+For example, to obtain the Total Dividend per Year for all Shares (per ETF), you just multiply the per-share dividend per year by the calculated model figure quantity of shares.
+"""
+
+verification_explanation = """The verifier checks whether the sum of total yearly gross dividends for the upper table (no economic decline/share split) is equal to $41,145.31 with a tolerance of +/- $0.01, along with the bottom table having a sum for the same figure as $25,120.62 with a tolerance of +/- $0.01. Only when both values match this check figure is the workbook correct and awarded a score of 1.0. 
+
+The verifier also checks whether the total quantity of shares was adjusted based on the reverse stock split to obtain a new total quantity in an alternative calculation of the total dividend per year for all ETFs as a separate methodology to obtain the final answer. If the total dividends per year were calculated correctly, roughly all amounts remaining in the workbook will be correct since the last three columns are simple arithmetic.
+
+Lastly, the verifier also checks the sums of the third calculated figure, Total ETF Dividend per Year (Gross), to determine if the total for each dividend in both tables is accurate. The verifier also checks that each of the rows for the individual ETFs has correctly calculated sums on an ETF-by-ETF basis.
+
+It is important to note that the reason there are alternative calculations for two of the columns is due to the fact that the percentage decline in share value is also the same percentage decline in total share quantities after the reverse-share split for each ETF. I.e. AMDY drops 50% in share value and also drops 50% in total quantity of shares."""
+
+keywords = ["excel", "finance"]
+
+[verifier]
+timeout_sec = 18000.0
+environment_mode = "separate"            
+
+[agent]
+timeout_sec = 28800.0                     
+
+[environment]
+network_mode = "public"
+build_timeout_sec = 600.0
+cpus = 1
+memory_mb = 2048
+storage_mb = 10240
+gpus = 0                                              
+# max 1 (single H100) if you need GPU
+# gpu_types = ["H100"]
+
+

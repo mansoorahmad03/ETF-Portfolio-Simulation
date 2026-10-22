@@ -55,5 +55,5 @@ For example, MSTY has 50% of the previous number of shares while also having a m
 
 =======
 # ETF-Portfolio-Simulation
-This is a simulation of economic decline which results in declining share values for 7 ETFs, with two ETFs specifically going through a reverse-share split based on historical events that occurred during the end of FY 2025 and onwards.
+This is code for a simulation of economic decline that resulted in declining share values for 7 ETFs, with two ETFs specifically going through a reverse-share split based on historical events that occurred during the end of FY 2025 and onwards. Some of the calculations are different than occured during 2025-2026 for the purpose of showing the drastic effects of certain ETF strategies (high-yield investments).
 >>>>>>> origin/main

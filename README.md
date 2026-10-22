@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # **7 ETF Portfolio Simulation**
 
 
@@ -52,3 +53,7 @@ To make the simulation more challenging for the model, it was specified that a r
 
 For example, MSTY has 50% of the previous number of shares while also having a market value drop of 50% of its previous amount. That is the essence of this task.
 
+=======
+# ETF-Portfolio-Simulation
+This is a simulation of economic decline which results in declining share values for 7 ETFs, with two ETFs specifically going through a reverse-share split based on historical events that occurred during the end of FY 2025 and onwards.
+>>>>>>> origin/main
